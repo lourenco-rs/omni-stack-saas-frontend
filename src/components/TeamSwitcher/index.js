@@ -1,36 +1,47 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import TeamsActions from "store/ducks/teams";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import TeamsActions from 'store/ducks/teams';
 
-import { Container, TeamList, Team } from "./styles";
+import Button from 'styles/components/Button';
+import Modal from 'components/Modal';
+
+import {
+  Container, TeamList, Team, NewTeam,
+} from './styles';
 
 class TeamSwitcher extends Component {
   static propTypes = {
     getTeamsRequest: PropTypes.func.isRequired,
     selectTeam: PropTypes.func.isRequired,
+    openTeamModal: PropTypes.func.isRequired,
+    closeTeamModal: PropTypes.func.isRequired,
     teams: PropTypes.shape({
       data: PropTypes.arrayOf(
         PropTypes.shape({
           id: PropTypes.number,
-          name: PropTypes.string
-        })
-      )
-    }).isRequired
+          name: PropTypes.string,
+        }),
+      ),
+    }).isRequired,
   };
 
   componentDidMount() {
-    this.props.getTeamsRequest();
+    const { getTeamsRequest } = this.props;
+
+    getTeamsRequest();
   }
 
-  handleTeamSelect = team => {
-    this.props.selectTeam(team);
+  handleTeamSelect = (team) => {
+    const { selectTeam } = this.props;
+
+    selectTeam(team);
   };
 
   render() {
-    const { teams } = this.props;
+    const { teams, openTeamModal, closeTeamModal } = this.props;
 
     return (
       <Container>
@@ -45,6 +56,26 @@ class TeamSwitcher extends Component {
               />
             </Team>
           ))}
+
+          <NewTeam onClick={openTeamModal}>NOVO</NewTeam>
+
+          {teams.teamModalOpen && (
+            <Modal>
+              <h1>Criar time</h1>
+
+              <form onSubmit={() => {}}>
+                <span>NOME</span>
+                <input name="newTeam" />
+
+                <Button size="big" type="submit">
+                  Salvar
+                </Button>
+                <Button size="small" color="gray" onClick={closeTeamModal}>
+                  Cancelar
+                </Button>
+              </form>
+            </Modal>
+          )}
         </TeamList>
       </Container>
     );
@@ -52,13 +83,12 @@ class TeamSwitcher extends Component {
 }
 
 const mapStateToProps = state => ({
-  teams: state.teams
+  teams: state.teams,
 });
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(TeamsActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(TeamsActions, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(TeamSwitcher);
