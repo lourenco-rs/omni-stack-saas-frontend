@@ -1,12 +1,13 @@
 import { all, takeLatest } from 'redux-saga/effects';
 
-import { TeamsTypes } from 'store/ducks/teams';
-import { ProjectsTypes } from 'store/ducks/projects';
-import { signIn, signOut } from './auth';
-import { AuthTypes } from '../ducks/auth';
-
+import { TeamsTypes } from '../ducks/teams';
 import { getTeams, createTeam } from './teams';
-import { getProjects } from './projects';
+
+import { ProjectsTypes } from '../ducks/projects';
+import { getProjects, createProject } from './projects';
+
+import { AuthTypes } from '../ducks/auth';
+import { signIn, signOut } from './auth';
 
 export default function* rootSaga() {
   return yield all([
@@ -18,6 +19,7 @@ export default function* rootSaga() {
 
     takeLatest(TeamsTypes.SELECT_TEAM, getProjects),
     takeLatest(ProjectsTypes.GET_PROJECTS_REQUEST, getProjects),
+    takeLatest(ProjectsTypes.CREATE_PROJECT_REQUEST, createProject),
   ]);
 }
 
