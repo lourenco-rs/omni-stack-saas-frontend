@@ -19,7 +19,7 @@ export const MembersList = styled.ul`
     }
 
     > div {
-      width: 320;
+      width: 320px;
       color: #666;
     }
   }

@@ -17,7 +17,7 @@ export function* createProject({ title }) {
     yield put(ProjectsActions.createProjectSuccess(response.data));
     yield put(ProjectsActions.closeProjectModal());
   } catch (error) {
-    put(
+    yield put(
       toastrActions.add({
         type: 'error',
         title: 'Erro na operação',
