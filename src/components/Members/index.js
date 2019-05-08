@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import MembersActions from 'store/ducks/members';
 
+import Can from 'components/Can';
 import Modal from 'components/Modal';
 import Button from 'styles/components/Button';
 import api from 'services/api';
@@ -77,29 +78,36 @@ class Members extends Component {
       <Modal size="big">
         <h1>Membros</h1>
 
-        <Invite onSubmit={this.handleInvite}>
-          <input
-            name="invite"
-            placeholder="Convidar para o time"
-            onChange={this.handleInputChange}
-            value={invite}
-          />
-          <Button type="submit">Enviar</Button>
-        </Invite>
+        <Can checkRole="administrator">
+          <Invite onSubmit={this.handleInvite}>
+            <input
+              name="invite"
+              placeholder="Convidar para o time"
+              onChange={this.handleInputChange}
+              value={invite}
+            />
+            <Button type="submit">Enviar</Button>
+          </Invite>
+        </Can>
 
         <form>
           <MembersList>
             {members.data.map(member => (
               <li key={member.id}>
                 <strong>{member.user.name}</strong>
-                <Select
-                  isMulti
-                  options={roles}
-                  value={member.roles}
-                  getOptionLabel={role => role.name}
-                  getOptionValue={role => role.id}
-                  onChange={value => this.handleRolesChange(member.id, value)}
-                />
+                <Can checkRole="administrator">
+                  {can => (
+                    <Select
+                      isMulti
+                      options={roles}
+                      isDisabled={!can}
+                      value={member.roles}
+                      getOptionLabel={role => role.name}
+                      getOptionValue={role => role.id}
+                      onChange={value => this.handleRolesChange(member.id, value)}
+                    />
+                  )}
+                </Can>
               </li>
             ))}
           </MembersList>
