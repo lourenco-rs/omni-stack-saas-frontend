@@ -1,11 +1,11 @@
-import Axios from "axios";
-import store from "store";
+import Axios from 'axios';
+import store from 'store';
 
 const api = Axios.create({
-  baseURL: "http://localhost:3333"
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   const { token } = store.getState().auth;
   const { active: team } = store.getState().teams;
 

@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import AuthActions from "store/ducks/auth";
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import AuthActions from 'store/ducks/auth';
 
-import Button from "styles/components/Button";
+import Button from 'styles/components/Button';
 
-import { Container, SignForm } from "../styles";
+import { Container, SignForm } from '../styles';
 
 class SignIn extends Component {
   static propTypes = {
-    signInRequest: PropTypes.func.isRequired
+    signInRequest: PropTypes.func.isRequired,
   };
 
   state = {
-    email: "",
-    password: ""
+    email: '',
+    password: '',
   };
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const { email, password } = this.state;
@@ -28,7 +28,7 @@ class SignIn extends Component {
     signInRequest(email, password);
   };
 
-  handleInputChange = e => {
+  handleInputChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -41,12 +41,7 @@ class SignIn extends Component {
           <h1>Boas vindas</h1>
 
           <span>E-MAIL</span>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={this.handleInputChange}
-          />
+          <input type="email" name="email" value={email} onChange={this.handleInputChange} />
 
           <span>SENHA</span>
           <input
@@ -65,10 +60,9 @@ class SignIn extends Component {
   }
 }
 
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(AuthActions, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators(AuthActions, dispatch);
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignIn);
